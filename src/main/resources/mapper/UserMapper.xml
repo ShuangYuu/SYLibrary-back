@@ -1,0 +1,8 @@
+<select id="getUsers" resultType="src/main/java/org/springboot/bean/User.java">
+    SELECT * FROM user
+    <where>
+        <if test="name != null and name != ''">
+            name LIKE CONCAT('%', #{name}, '%')
+        </if>
+    </where>
+</select>
