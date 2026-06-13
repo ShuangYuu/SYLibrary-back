@@ -1,10 +1,10 @@
 package org.springboot.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.springboot.bean.User;
-import org.springboot.bean.dto.JwtUser;
-import org.springboot.bean.request.UserLoginRequest;
-import org.springboot.bean.request.UserRequest;
+import org.springboot.entity.User;
+import org.springboot.entity.dto.JwtUser;
+import org.springboot.entity.dto.UserLoginDTO;
+import org.springboot.entity.request.UserRequest;
 
 import java.util.List;
 
@@ -16,13 +16,13 @@ public interface UserMapper {
 
     @Select({
             "<script>",
-            "SELECT * FROM user",
+            "SELECT id, username, phone, age, sex, address, cardId FROM user",
             "<where>",
             "  <if test='req.username != null and req.username != \"\"'>",
             "    username LIKE CONCAT('%', #{ req.username }, '%')",
             "  </if>",
             "</where>",
-//            "order by id desc",
+            "order by id desc",
             "</script>"
     })
     List<User> getUsers(@Param("req") UserRequest userRequest);
@@ -42,7 +42,7 @@ public interface UserMapper {
 
     @Select("select * from user " +
             "where phone = #{ phone }")
-    User login(UserLoginRequest userLoginRequest);
+    User login(UserLoginDTO userLoginDTO);
 
     @Select("select * from user " +
             "where id = #{ id }")

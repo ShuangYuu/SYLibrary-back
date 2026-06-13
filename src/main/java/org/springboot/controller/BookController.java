@@ -1,10 +1,13 @@
 package org.springboot.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springboot.bean.Book;
-import org.springboot.bean.request.BookRequest;
 import org.springboot.common.Result;
-import org.springboot.service.BookServiceImpl;
+import org.springboot.entity.Book;
+import org.springboot.entity.request.BookImportSelectedRequest;
+import org.springboot.entity.request.BookRequest;
+import org.springboot.entity.request.ExternalBookSearchRequest;
+import org.springboot.service.impl.BookImportServiceImpl;
+import org.springboot.service.impl.BookServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,9 @@ public class BookController {
 
     @Autowired
     private BookServiceImpl bookServiceImpl;
+
+    @Autowired
+    private BookImportServiceImpl bookImportServiceImpl;
 
     @GetMapping("/page")
     public Result getBooks(BookRequest bookRequest) {
@@ -34,9 +40,9 @@ public class BookController {
         return Result.success();
     }
 
-    @DeleteMapping("/{id}")
-    public Result deleteBook(@PathVariable Integer id) {
-        bookServiceImpl.deleteBook(id);
+    @DeleteMapping("/{bookId}")
+    public Result deleteBook(@PathVariable String bookId) {
+        bookServiceImpl.deleteBook(bookId);
         return Result.success();
     }
 
@@ -48,5 +54,25 @@ public class BookController {
     @GetMapping("/newBooks")
     public Result getNewBooks() {
         return Result.success(bookServiceImpl.getNewBooks());
+    }
+
+    @GetMapping("/home")
+    public Result getHomeBooks() {
+        return Result.success(bookServiceImpl.getHomeBooks());
+    }
+
+    @GetMapping("/external/search")
+    public Result searchExternalBooks(ExternalBookSearchRequest request) {
+        return Result.success(bookImportServiceImpl.searchExternalBooks(request));
+    }
+
+    @PostMapping("/import/selected")
+    public Result importSelectedBooks(@RequestBody BookImportSelectedRequest request) {
+        return Result.success(bookImportServiceImpl.importSelectedBooks(request));
+    }
+
+    @PostMapping("/import/open-library")
+    public Result importOpenLibraryBooks(@RequestBody ExternalBookSearchRequest request) {
+        return Result.success(bookImportServiceImpl.importOpenLibraryBooks(request));
     }
 }

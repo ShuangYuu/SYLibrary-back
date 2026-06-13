@@ -1,7 +1,7 @@
 package org.springboot.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.springboot.bean.RefreshToken;
+import org.springboot.entity.RefreshToken;
 
 import java.util.Optional;
 

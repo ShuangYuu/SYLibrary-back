@@ -1,4 +1,4 @@
-package org.springboot.bean.request;
+package org.springboot.entity.request;
 
 import lombok.Data;
 

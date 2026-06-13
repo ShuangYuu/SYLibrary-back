@@ -1,13 +1,14 @@
 package org.springboot.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springboot.bean.Admin;
-import org.springboot.bean.dto.JwtUser;
-import org.springboot.bean.dto.RefreshDTO;
-import org.springboot.bean.request.AdminRequest;
-import org.springboot.bean.request.AdminLoginRequest;
+import org.springboot.entity.Admin;
+import org.springboot.entity.dto.JwtUser;
+import org.springboot.entity.dto.RefreshDTO;
+import org.springboot.entity.dto.UserLoginDTO;
+import org.springboot.entity.request.AdminRequest;
+import org.springboot.entity.request.AdminLoginRequest;
 import org.springboot.common.Result;
-import org.springboot.service.AdminServiceImpl;
+import org.springboot.service.impl.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -60,10 +61,22 @@ public class AdminController {
         return Result.success(adminServiceImpl.deleteAdmin(id));
     }
 
-    // 登录并颁发双令牌
-    @PostMapping("/login")
-    public Result addAdmin(@RequestBody AdminLoginRequest adminLoginRequest) {
-        return Result.success(adminServiceImpl.login(adminLoginRequest));
+    // 密码登录
+    @PostMapping("/login/password")
+    public Result login(@RequestBody AdminLoginRequest adminLoginRequest) {
+        return adminServiceImpl.login(adminLoginRequest);
+    }
+
+    // 发送验证码
+    @PostMapping("/login/code/send")
+    public Result sendCode(@RequestBody String phone) {
+        return adminServiceImpl.sendCode(phone);
+    }
+
+    // 验证码登录
+    @PostMapping("/login/code")
+    public Result loginByCode(@RequestBody UserLoginDTO userLoginDTO) {
+        return adminServiceImpl.loginByCode(userLoginDTO);
     }
 
     // 刷新短期令牌
@@ -74,6 +87,7 @@ public class AdminController {
         return Result.success(adminServiceImpl.refresh(oldRefreshToken));
     }
 
+    // 退出登录并清除令牌
     @PostMapping("/deleteToken")
     public Result deleteToken(@RequestBody RefreshDTO refreshDTO) {
         String refreshToken = refreshDTO.getRefreshToken();

@@ -1,13 +1,16 @@
-package org.springboot.service;
+package org.springboot.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springboot.bean.Book;
-import org.springboot.bean.request.BookRequest;
+import org.springboot.entity.Book;
+import org.springboot.entity.dto.BookHomeDTO;
+import org.springboot.entity.request.BookRequest;
 import org.springboot.mapper.BookMapper;
+import org.springboot.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,13 +26,14 @@ public class BookServiceImpl implements BookService {
         return new PageInfo<>(books);
     }
 
+    @Override
     public void addBook(Book book) {
         bookMapper.addBook(book);
     }
 
     @Override
-    public void deleteBook(Integer id) {
-        bookMapper.deleteBookById(id);
+    public void deleteBook(String bookId) {
+        bookMapper.deleteBookById(bookId);
     }
 
     @Override
@@ -45,5 +49,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getNewBooks() {
         return bookMapper.getNewBooks();
+    }
+
+    @Override
+    public BookHomeDTO getHomeBooks() {
+        return new BookHomeDTO(
+                bookMapper.getHomeBannerBooks(5),
+                bookMapper.getRecentBooks(8),
+                Collections.emptyList()
+        );
     }
 }

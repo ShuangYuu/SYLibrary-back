@@ -1,10 +1,10 @@
 package org.springboot.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.springboot.bean.Admin;
-import org.springboot.bean.dto.JwtUser;
-import org.springboot.bean.request.AdminRequest;
-import org.springboot.bean.request.AdminLoginRequest;
+import org.springboot.entity.Admin;
+import org.springboot.entity.dto.JwtUser;
+import org.springboot.entity.request.AdminRequest;
+import org.springboot.entity.request.AdminLoginRequest;
 
 import java.util.List;
 
@@ -31,6 +31,10 @@ public interface AdminMapper {
             "values( #{ username }, #{ password }, #{ phone }, #{ email })")
     int addAdmin(Admin admin);
 
+    @Insert("insert into admin(username, phone) " +
+            "values( #{ username }, #{ phone })")
+    int addAdminByLogin(Admin admin);
+
     @Update("update admin " +
             "set username = #{ username }, phone = #{ phone }, email = #{ email } " +
             "where id = #{ id }")
@@ -39,6 +43,10 @@ public interface AdminMapper {
     @Delete("delete from admin " +
             "where id = #{ id }")
     int deleteAdmin(Integer id);
+
+    @Select("select * from admin " +
+            "where phone = #{ phone }")
+    Admin getAdminByPhone(String phone);
 
     @Select("select * from admin " +
             "where username = #{ username }")

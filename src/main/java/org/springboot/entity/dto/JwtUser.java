@@ -1,4 +1,4 @@
-package org.springboot.bean.dto;
+package org.springboot.entity.dto;
 
 import io.jsonwebtoken.Claims;
 import lombok.Data;
@@ -35,7 +35,7 @@ public class JwtUser implements UserDetails {
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + roleClaim.toUpperCase());
             this.authorities = List.of(authority);
         } else {
-            // 如果 role 为空，设置一个安全默认值，防止授权逻辑失败
+            // 如果 role 为空，设置一个默认值，防止授权逻辑失败
             this.role = "UNKNOWN";
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_UNKNOWN");
             this.authorities = List.of(authority);

@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -20,7 +19,6 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    // 构造函数注入
     public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
@@ -28,7 +26,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            //解决跨域
             .cors(cors -> {
                 cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
@@ -41,27 +38,24 @@ public class SecurityConfig {
                     return config;
                 });
             })
-
-            // 关闭 CSRF 防护（POST 请求不再检查 CSRF token）
             .csrf(AbstractHttpConfigurer::disable)
-
-            // 放行（不需要认证），其他请求必须登录
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 允许所有 OPTIONS 请求
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers(
-                            "/admin/login",
+                            "/admin/login/**",
                             "/admin/refresh",
-                            "/user/login",
+                            "/user/login/**",
                             "/user/refresh",
                             "/book/swiper",
-                            "/book/newBooks"
+                            "/book/newBooks",
+                            "/book/home"
                     ).permitAll()
+                    .requestMatchers("/book/external/**", "/book/import/**").hasRole("ADMIN")
+                    .requestMatchers("/dashboard/**").hasRole("ADMIN")
                     .requestMatchers("/book/**", "/user/info", "/user/deleteToken").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/admin/**", "/user/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
-
-            // 添加 JWT 过滤器
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

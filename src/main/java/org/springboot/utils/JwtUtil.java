@@ -3,7 +3,7 @@ package org.springboot.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springboot.bean.dto.JwtUser;
+import org.springboot.entity.dto.JwtUser;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -14,13 +14,11 @@ import java.util.UUID;
 public class JwtUtil {
 
     private static final String SECRET_STRING = "mySecret-78373361-@ShuangYu0123456789";
-    // 【新】使用 Keys.hmacShaKeyFor() 将字符串安全地转换为 SecretKey 对象
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET_STRING.getBytes());
     private static final long ACCESS_TOKEN_EXPIRATION_TIME = 30 * 60 * 1000;
     private static final long REFRESH_TOKEN_EXPIRATION_TIME = 7 * 24 * 3600 * 1000;
 
     public static String createAccessToken(JwtUser jwtUser) {
-
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION_TIME);
 
@@ -41,7 +39,6 @@ public class JwtUtil {
     }
 
     public static String createRefreshToken(JwtUser jwtUser) {
-
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + REFRESH_TOKEN_EXPIRATION_TIME);
 
@@ -57,15 +54,13 @@ public class JwtUtil {
                 .expiration(expiryDate)
                 .signWith(SECRET_KEY)
                 .compact();
-        
     }
 
     public static Claims validateToken(String token) {
-        return  Jwts.parser()
+        return Jwts.parser()
                 .verifyWith(SECRET_KEY)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
-
 }

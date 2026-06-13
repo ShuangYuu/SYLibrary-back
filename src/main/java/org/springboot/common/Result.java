@@ -1,7 +1,5 @@
 package org.springboot.common;
 
-import com.sun.net.httpserver.Authenticator;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

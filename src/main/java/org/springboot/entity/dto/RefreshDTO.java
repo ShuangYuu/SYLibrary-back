@@ -1,4 +1,4 @@
-package org.springboot.bean.dto;
+package org.springboot.entity.dto;
 
 import lombok.Data;
 

@@ -1,11 +1,11 @@
 package org.springboot.service;
 
-import org.springboot.bean.Admin;
-import org.springboot.bean.request.AdminRequest;
-import org.springboot.bean.request.AdminLoginRequest;
+import org.springboot.common.Result;
+import org.springboot.entity.Admin;
+import org.springboot.entity.request.AdminRequest;
+import org.springboot.entity.request.AdminLoginRequest;
 
 import java.util.List;
-import java.util.Map;
 
 public interface AdminService {
 
@@ -19,7 +19,7 @@ public interface AdminService {
 
     int deleteAdmin(Integer id);
 
-    Map<String, String> login(AdminLoginRequest adminLoginRequest);
+    Result login(AdminLoginRequest adminLoginRequest);
 
     Object refresh(String refreshToken);
 

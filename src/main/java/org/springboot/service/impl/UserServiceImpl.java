@@ -1,20 +1,22 @@
-package org.springboot.service;
+package org.springboot.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
-import org.springboot.bean.RefreshToken;
-import org.springboot.bean.User;
-import org.springboot.bean.dto.JwtUser;
-import org.springboot.bean.request.UserLoginRequest;
-import org.springboot.bean.request.UserRequest;
+import org.springboot.common.Result;
+import org.springboot.entity.RefreshToken;
+import org.springboot.entity.User;
+import org.springboot.entity.dto.JwtUser;
+import org.springboot.entity.dto.UserLoginDTO;
+import org.springboot.entity.request.UserRequest;
 import org.springboot.exception.ForbiddenException;
 import org.springboot.exception.InvalidRequestException;
 import org.springboot.exception.ServiceException;
 import org.springboot.exception.UnauthorizedException;
 import org.springboot.mapper.RefreshTokenMapper;
 import org.springboot.mapper.UserMapper;
+import org.springboot.service.UserService;
 import org.springboot.utils.JwtUtil;
 import org.springboot.utils.PasswordUtil;
 import org.springframework.beans.BeanUtils;
@@ -23,7 +25,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -66,13 +72,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, String> login(UserLoginRequest userLoginRequest) {
-        User login = userMapper.login(userLoginRequest);
-        if(login == null) {
-            throw new ServiceException("用户名错误！");
-        }
-        else if(!PasswordUtil.checkPassword(userLoginRequest.getPassword(), login.getPassword())) {
-            throw new ServiceException("密码错误！");
+    public Result sendCode(String phone) {
+        return null;
+    }
+
+    @Override
+    public Result loginByCode(UserLoginDTO userLoginDTO) {
+        return null;
+    }
+
+    @Override
+    public Map<String, String> login(UserLoginDTO userLoginDTO) {
+        User login = userMapper.login(userLoginDTO);
+        if (login == null) {
+            throw new ServiceException("用户名错误");
+        } else if (!PasswordUtil.checkPassword(userLoginDTO.getPassword(), login.getPassword())) {
+            throw new ServiceException("密码错误");
         }
 
         JwtUser jwtUser = new JwtUser();
@@ -95,12 +110,10 @@ public class UserServiceImpl implements UserService {
         refreshTokenMapper.addRefreshToken(refreshTokenObj);
 
         return tokens;
-
     }
 
     @Override
     public Map<String, String> refresh(String oldRefreshToken) {
-
         Claims claims;
         RefreshToken refreshToken = new RefreshToken();
 
@@ -110,7 +123,7 @@ public class UserServiceImpl implements UserService {
             throw new UnauthorizedException("刷新令牌已失效");
         }
 
-        if(!"refresh_token".equals(claims.get("type", String.class))) {
+        if (!"refresh_token".equals(claims.get("type", String.class))) {
             throw new InvalidRequestException("这不是一个正确的刷新令牌");
         }
 
@@ -118,12 +131,12 @@ public class UserServiceImpl implements UserService {
         refreshToken.setType("refresh_token");
         refreshToken.setJti(claims.get("jti", String.class));
 
-        System.out.println("尝试查询 Refresh Token：");
-        System.out.println("  JTI (来自 JWT)：" + refreshToken.getJti());
+        System.out.println("尝试查询 Refresh Token:");
+        System.out.println("  JTI (来自 JWT): " + refreshToken.getJti());
 
         Optional<RefreshToken> rfTOptional = refreshTokenMapper.findByJtiAndId(refreshToken);
 
-        if(rfTOptional.isEmpty()) {
+        if (rfTOptional.isEmpty()) {
             throw new ForbiddenException("无效的令牌");
         }
 
@@ -140,7 +153,7 @@ public class UserServiceImpl implements UserService {
         String newRefreshToken = JwtUtil.createRefreshToken(jwtUser);
         claims = JwtUtil.validateToken(newRefreshToken);
 
-        UsernamePasswordAuthenticationToken auth =  new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 jwtUser,
                 null,
                 jwtUser.getAuthorities()
@@ -158,7 +171,6 @@ public class UserServiceImpl implements UserService {
         tokens.put("refreshToken", newRefreshToken);
 
         return tokens;
-
     }
 
     @Override
@@ -166,7 +178,6 @@ public class UserServiceImpl implements UserService {
         Claims claims = JwtUtil.validateToken(refreshToken_s);
         RefreshToken refreshToken = new RefreshToken(claims.get("id", Integer.class));
         refreshTokenMapper.deleteRefreshToken(refreshToken);
-        log.info("删除Token成功!");
+        log.info("删除 Token 成功");
     }
-
 }

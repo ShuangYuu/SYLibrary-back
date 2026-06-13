@@ -1,7 +1,6 @@
-package org.springboot.bean;
+package org.springboot.entity;
 
 import lombok.Data;
-import org.apache.tomcat.util.bcel.Const;
 
 import java.sql.Timestamp;
 
@@ -12,7 +11,7 @@ public class Admin {
     private String password;
     private String phone;
     private String email;
-    private Timestamp createTime;
+    private Timestamp createdTime;
     private Timestamp updateTime;
     private String role = "ADMIN";
 }

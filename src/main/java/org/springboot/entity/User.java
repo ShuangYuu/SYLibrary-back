@@ -1,4 +1,4 @@
-package org.springboot.bean;
+package org.springboot.entity;
 
 import lombok.Data;
 
@@ -15,7 +15,7 @@ public class User {
     private String sex;
     private String phone;
     private String address;
-    private Timestamp createTime;
+    private Timestamp createdTime;
     private Timestamp updateTime;
     private String role = "USER";
 }

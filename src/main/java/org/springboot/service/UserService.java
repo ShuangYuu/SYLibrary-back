@@ -1,8 +1,9 @@
 package org.springboot.service;
 
-import org.springboot.bean.User;
-import org.springboot.bean.request.UserLoginRequest;
-import org.springboot.bean.request.UserRequest;
+import org.springboot.common.Result;
+import org.springboot.entity.User;
+import org.springboot.entity.dto.UserLoginDTO;
+import org.springboot.entity.request.UserRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
 public interface UserService {
 
     List<User> allUsers();
+
     Object getUsers(UserRequest userRequest);
 
     int addUser(User user);
@@ -18,9 +20,13 @@ public interface UserService {
 
     int deleteUser(Integer id);
 
-    Map<String, String> login(UserLoginRequest userLoginRequest);
+    Map<String, String> login(UserLoginDTO userLoginDTO);
 
     Map<String, String> refresh(String oldRefreshToken);
 
     void deleteRefreshToken(String refreshToken_s);
+
+    Result sendCode(String phone);
+
+    Result loginByCode(UserLoginDTO userLoginDTO);
 }

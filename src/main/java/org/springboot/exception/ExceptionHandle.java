@@ -19,28 +19,28 @@ public class ExceptionHandle {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Result exceptionError(Exception e){
+    public Result exceptionError(Exception e) {
         log.error("系统错误", e);
         return Result.error("系统错误");
     }
 
     @ExceptionHandler(value = UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Result unauthorizedException(Exception e){
+    public Result unauthorizedException(Exception e) {
         log.error(e.getMessage(), e);
         return Result.error(401, e.getMessage());
     }
 
     @ExceptionHandler(value = ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public Result forbiddenException(Exception e){
+    public Result forbiddenException(Exception e) {
         log.error(e.getMessage(), e);
         return Result.error(403, e.getMessage());
     }
 
     @ExceptionHandler(value = InvalidRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Result invalidRequestException(Exception e){
+    public Result invalidRequestException(Exception e) {
         log.error(e.getMessage(), e);
         return Result.error(400, e.getMessage());
     }

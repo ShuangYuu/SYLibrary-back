@@ -1,7 +1,8 @@
 package org.springboot.service;
 
-import org.springboot.bean.Book;
-import org.springboot.bean.request.BookRequest;
+import org.springboot.entity.Book;
+import org.springboot.entity.dto.BookHomeDTO;
+import org.springboot.entity.request.BookRequest;
 
 import java.util.List;
 
@@ -11,11 +12,13 @@ public interface BookService {
 
     void addBook(Book book);
 
-    void deleteBook(Integer id);
+    void deleteBook(String bookId);
 
     void updateBook(Book book);
 
     List<Book> getSwiperBooks();
 
     List<Book> getNewBooks();
+
+    BookHomeDTO getHomeBooks();
 }
