@@ -1,2 +1,2 @@
-CREATE INDEX `idx_book_createdTime` ON `book` (`createdTime`);
-CREATE INDEX `idx_user_createdTime` ON `user` (`createdTime`);
+CREATE INDEX `idx_book_createTime` ON `book` (`createTime`);
+CREATE INDEX `idx_user_create_time` ON `user` (`createTime`);

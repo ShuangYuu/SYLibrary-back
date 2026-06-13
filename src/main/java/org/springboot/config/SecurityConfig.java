@@ -48,11 +48,12 @@ public class SecurityConfig {
                             "/user/refresh",
                             "/book/swiper",
                             "/book/newBooks",
-                            "/book/home"
+                            "/book/home",
+                            "/book/page"
                     ).permitAll()
                     .requestMatchers("/book/external/**", "/book/import/**").hasRole("ADMIN")
                     .requestMatchers("/dashboard/**").hasRole("ADMIN")
-                    .requestMatchers("/book/**", "/user/info", "/user/deleteToken").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/book/**", "/user/info", "/user/deleteToken", "/user/favorites/**").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/admin/**", "/user/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )

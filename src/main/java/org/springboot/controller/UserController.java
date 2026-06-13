@@ -7,6 +7,7 @@ import org.springboot.entity.dto.UserLoginDTO;
 import org.springboot.common.Result;
 import org.springboot.entity.request.UserRequest;
 import org.springboot.service.UserService;
+import org.springboot.service.UserFavoriteBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserFavoriteBookService userFavoriteBookService;
 
     @GetMapping("/")
     public Result allUsers() {
@@ -52,6 +56,32 @@ public class UserController {
     public Result getUserInfo() {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Result.success(jwtUser);
+    }
+
+    @GetMapping("/favorites")
+    public Result getFavorites() {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Result.success(userFavoriteBookService.getFavorites(jwtUser.getId()));
+    }
+
+    @GetMapping("/favorites/{bookId}")
+    public Result isFavorite(@PathVariable Integer bookId) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Result.success(userFavoriteBookService.isFavorite(jwtUser.getId(), bookId));
+    }
+
+    @PostMapping("/favorites/{bookId}")
+    public Result addFavorite(@PathVariable Integer bookId) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userFavoriteBookService.addFavorite(jwtUser.getId(), bookId);
+        return Result.success();
+    }
+
+    @DeleteMapping("/favorites/{bookId}")
+    public Result deleteFavorite(@PathVariable Integer bookId) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userFavoriteBookService.deleteFavorite(jwtUser.getId(), bookId);
+        return Result.success();
     }
 
     // 密码登录
