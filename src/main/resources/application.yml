@@ -32,7 +32,7 @@ book-import:
       host: 127.0.0.1
       port: 7897
   google-books:
-    api-key: ${GOOGLE_BOOK_API_KEY}
+    api-key: ${GOOGLE_BOOK_API_KEY:}
     proxy:
       enabled: true
       host: 127.0.0.1

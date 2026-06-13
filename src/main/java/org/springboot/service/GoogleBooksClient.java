@@ -33,6 +33,7 @@ public class GoogleBooksClient {
 
     public GoogleBooksClient(GoogleBooksProperties properties) {
         this.properties = properties;
+        System.out.println("Google Books API Key: " + properties.getApiKey());
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(Duration.ofSeconds(8));
         requestFactory.setReadTimeout(Duration.ofSeconds(20));

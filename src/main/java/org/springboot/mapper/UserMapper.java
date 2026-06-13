@@ -42,7 +42,7 @@ public interface UserMapper {
 
     @Select("select * from user " +
             "where phone = #{ phone }")
-    User login(UserLoginDTO userLoginDTO);
+    List<User> findByPhone(UserLoginDTO userLoginDTO);
 
     @Select("select * from user " +
             "where id = #{ id }")

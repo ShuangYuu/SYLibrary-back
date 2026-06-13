@@ -83,10 +83,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, String> login(UserLoginDTO userLoginDTO) {
-        User login = userMapper.login(userLoginDTO);
-        if (login == null) {
+        List<User> users = userMapper.findByPhone(userLoginDTO);
+        if (users == null || users.isEmpty()) {
             throw new ServiceException("用户名错误");
-        } else if (!PasswordUtil.checkPassword(userLoginDTO.getPassword(), login.getPassword())) {
+        }
+
+        User login = users.stream()
+                .filter(user -> PasswordUtil.checkPassword(userLoginDTO.getPassword(), user.getPassword()))
+                .findFirst()
+                .orElse(null);
+
+        if (login == null) {
             throw new ServiceException("密码错误");
         }
 
