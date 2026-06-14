@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -20,7 +21,6 @@ public class JwtFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String header = request.getHeader("Authorization");
 
-        System.out.println("header: " + header);
         if (header != null && header.startsWith("Bearer ")) {
             try {
                 String token = header.substring(7);
@@ -34,11 +34,12 @@ public class JwtFilter extends OncePerRequestFilter {
                         jwtUser.getAuthorities()
                 );
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                System.out.println(auth.getPrincipal());
             } catch (Exception e) {
                 SecurityContextHolder.clearContext();
-                response.getWriter().write("{\"error\":\"invalid_token\"}");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write("{\"error\":\"invalid_token\"}");
                 return;
             }
         }

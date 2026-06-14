@@ -141,7 +141,6 @@ public class AdminServiceImpl implements AdminService {
     public Map<String, String> takeToken(Admin admin) {
         JwtUser jwtUser = new JwtUser();
         BeanUtils.copyProperties(admin, jwtUser);
-        System.out.println("当前权限: " + jwtUser.getRole());
 
         String accessToken = JwtUtil.createAccessToken(jwtUser);
         String refreshToken = JwtUtil.createRefreshToken(jwtUser);
@@ -163,7 +162,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Map<String, String> refresh(String oldRefreshToken) {
-        System.out.println("DEBUG: 收到刷新请求，Token 内容为 [" + oldRefreshToken + "]");
 
         Claims claims;
         RefreshToken refreshToken = new RefreshToken();
@@ -175,12 +173,10 @@ public class AdminServiceImpl implements AdminService {
         } catch (io.jsonwebtoken.security.SignatureException e) {
             throw new UnauthorizedException("令牌签名无效");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("Admin refresh token parse failed: {}", e.getMessage());
             throw new UnauthorizedException("刷新令牌解析失败: " + e.getMessage());
         }
 
-        System.out.println("已解析 claims，内容如下:");
-        System.out.println(claims);
 
         if (!"refresh_token".equals(claims.get("type", String.class))) {
             throw new InvalidRequestException("这不是一个正确的刷新令牌");
@@ -204,7 +200,6 @@ public class AdminServiceImpl implements AdminService {
         jwtUser.setUsername(jwtUser2.getUsername());
         jwtUser.setPhone(jwtUser2.getPhone());
         jwtUser.setEmail(jwtUser2.getEmail());
-        System.out.println(jwtUser);
 
         String newAccessToken = JwtUtil.createAccessToken(jwtUser);
         String newRefreshToken = JwtUtil.createRefreshToken(jwtUser);

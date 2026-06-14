@@ -13,7 +13,8 @@ import java.util.UUID;
 
 public class JwtUtil {
 
-    private static final String SECRET_STRING = "mySecret-78373361-@ShuangYu0123456789";
+    private static final String DEFAULT_DEV_SECRET = "mySecret-78373361-@ShuangYu0123456789";
+    private static final String SECRET_STRING = getSecretString();
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET_STRING.getBytes());
     private static final long ACCESS_TOKEN_EXPIRATION_TIME = 30 * 60 * 1000;
     private static final long REFRESH_TOKEN_EXPIRATION_TIME = 7 * 24 * 3600 * 1000;
@@ -62,5 +63,17 @@ public class JwtUtil {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    private static String getSecretString() {
+        String secret = System.getenv("JWT_SECRET");
+        if (secret == null || secret.isBlank()) {
+            if ("prod".equals(System.getProperty("spring.profiles.active"))
+                    || "prod".equals(System.getenv("SPRING_PROFILES_ACTIVE"))) {
+                throw new IllegalStateException("JWT_SECRET must be set in production.");
+            }
+            return DEFAULT_DEV_SECRET;
+        }
+        return secret;
     }
 }

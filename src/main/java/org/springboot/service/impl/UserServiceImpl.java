@@ -108,7 +108,6 @@ public class UserServiceImpl implements UserService {
         tokens.put("refreshToken", refreshToken);
 
         Claims claims = JwtUtil.validateToken(refreshToken);
-        System.out.println("当前权限: " + claims.get("role", String.class));
         RefreshToken refreshTokenObj = new RefreshToken();
         refreshTokenObj.setId(claims.get("id", Integer.class));
         refreshTokenObj.setType(claims.get("type", String.class));
@@ -138,8 +137,6 @@ public class UserServiceImpl implements UserService {
         refreshToken.setType("refresh_token");
         refreshToken.setJti(claims.get("jti", String.class));
 
-        System.out.println("尝试查询 Refresh Token:");
-        System.out.println("  JTI (来自 JWT): " + refreshToken.getJti());
 
         Optional<RefreshToken> rfTOptional = refreshTokenMapper.findByJtiAndId(refreshToken);
 
@@ -154,7 +151,6 @@ public class UserServiceImpl implements UserService {
         jwtUser.setUsername(jwtUser2.getUsername());
         jwtUser.setUserImage(jwtUser2.getUserImage());
         jwtUser.setPhone(jwtUser2.getPhone());
-        System.out.println(jwtUser);
 
         String newAccessToken = JwtUtil.createAccessToken(jwtUser);
         String newRefreshToken = JwtUtil.createRefreshToken(jwtUser);

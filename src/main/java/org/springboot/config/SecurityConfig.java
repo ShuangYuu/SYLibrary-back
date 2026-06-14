@@ -30,6 +30,10 @@ public class SecurityConfig {
                 cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.addAllowedOrigin("http://localhost:5173");
+                    config.addAllowedOrigin("https://shuangyuhub.com");
+                    config.addAllowedOrigin("https://www.shuangyuhub.com");
+                    config.addAllowedOrigin("https://admin.shuangyuhub.com");
+                    config.addAllowedOrigin("https://h5.shuangyuhub.com");
                     config.addAllowedHeader("Authorization");
                     config.addAllowedHeader("Content-Type");
                     config.addAllowedHeader("*");
