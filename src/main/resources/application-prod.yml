@@ -40,3 +40,9 @@ book-import:
       enabled: false
       host: 127.0.0.1
       port: 7897
+
+app:
+  upload:
+    avatar-dir: /opt/sylibrary/uploads/avatar/
+    public-prefix: /uploads/avatar/
+    public-base-url: ${PUBLIC_BASE_URL}

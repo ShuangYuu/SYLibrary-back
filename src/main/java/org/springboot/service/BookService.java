@@ -16,9 +16,5 @@ public interface BookService {
 
     void updateBook(Book book);
 
-    List<Book> getSwiperBooks();
-
-    List<Book> getNewBooks();
-
     BookHomeDTO getHomeBooks();
 }

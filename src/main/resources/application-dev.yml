@@ -36,3 +36,9 @@ book-import:
       enabled: true
       host: 127.0.0.1
       port: 7897
+
+app:
+  upload:
+    avatar-dir: D:/1JAVA/Project/SYLibrary/uploads/avatar/
+    public-prefix: /uploads/avatar/
+    public-base-url: http://localhost:8080

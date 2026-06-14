@@ -42,16 +42,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getSwiperBooks() {
-        return bookMapper.getSwiperBooks();
-    }
-
-    @Override
-    public List<Book> getNewBooks() {
-        return bookMapper.getNewBooks();
-    }
-
-    @Override
     public BookHomeDTO getHomeBooks() {
         return new BookHomeDTO(
                 bookMapper.getHomeBannerBooks(5),

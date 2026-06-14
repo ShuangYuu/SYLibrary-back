@@ -50,14 +50,13 @@ public class SecurityConfig {
                             "/admin/refresh",
                             "/user/login/**",
                             "/user/refresh",
-                            "/book/swiper",
-                            "/book/newBooks",
                             "/book/home",
-                            "/book/page"
+                            "/book/page",
+                            "/uploads/avatar/**"
                     ).permitAll()
                     .requestMatchers("/book/external/**", "/book/import/**").hasRole("ADMIN")
                     .requestMatchers("/dashboard/**").hasRole("ADMIN")
-                    .requestMatchers("/book/**", "/user/info", "/user/deleteToken", "/user/favorites/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/book/**", "/user/info", "/user/deleteToken", "/user/favorites/**", "/user/avatar").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/admin/**", "/user/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )

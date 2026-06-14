@@ -44,20 +44,6 @@ public interface BookMapper {
     @Delete("delete from book where book_id = #{ bookId }")
     void deleteBookById(@Param("bookId") String bookId);
 
-    @Select("select b.book_id, b.name, b.author, b.imageUrl, b.tags, b.comment, " +
-            "b.source_platform as sourcePlatform, b.source_id as sourceId, b.isbn, b.publisher, " +
-            "b.publish_year as publishYear, b.description, b.`createdTime` " +
-            "from bannerbook ba " +
-            "join book b on ba.book_id = b.book_id")
-    List<Book> getSwiperBooks();
-
-    @Select("select b.book_id, b.name, b.author, b.imageUrl, b.tags, b.comment, " +
-            "b.source_platform as sourcePlatform, b.source_id as sourceId, b.isbn, b.publisher, " +
-            "b.publish_year as publishYear, b.description, b.`createdTime` " +
-            "from newbook n " +
-            "join book b on n.book_id = b.book_id")
-    List<Book> getNewBooks();
-
     @Select("select book_id, name, author, imageUrl, tags, comment, " +
             "source_platform as sourcePlatform, source_id as sourceId, isbn, publisher, " +
             "publish_year as publishYear, description, `createdTime` " +

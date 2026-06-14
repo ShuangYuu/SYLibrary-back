@@ -36,6 +36,9 @@ public interface UserMapper {
             "where id = #{ id }")
     int updateUser(User user);
 
+    @Update("update user set userImage = #{ userImage } where id = #{ id }")
+    int updateUserImage(@Param("id") Integer id, @Param("userImage") String userImage);
+
     @Delete("delete from user " +
             "where id = #{ id }")
     int deleteUser(Integer id);

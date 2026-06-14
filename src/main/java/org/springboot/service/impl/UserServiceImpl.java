@@ -54,6 +54,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public JwtUser getUserInfo(Integer userId) {
+        JwtUser query = new JwtUser();
+        query.setId(userId);
+        JwtUser userInfo = userMapper.searchById(query);
+        if (userInfo == null) {
+            throw new ServiceException("用户不存在");
+        }
+        return userInfo;
+    }
+
+    @Override
     public int addUser(User user) {
         user.setCardID(UUID.randomUUID().toString());
         user.setPassword(PasswordUtil.encode(user.getPassword()));

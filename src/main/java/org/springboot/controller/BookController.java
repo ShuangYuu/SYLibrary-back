@@ -45,16 +45,6 @@ public class BookController {
         return Result.success();
     }
 
-    @GetMapping("/swiper")
-    public Result getSwiperBooks() {
-        return Result.success(bookServiceImpl.getSwiperBooks());
-    }
-
-    @GetMapping("/newBooks")
-    public Result getNewBooks() {
-        return Result.success(bookServiceImpl.getNewBooks());
-    }
-
     @GetMapping("/home")
     public Result getHomeBooks() {
         return Result.success(bookServiceImpl.getHomeBooks());

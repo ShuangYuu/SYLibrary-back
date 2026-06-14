@@ -7,6 +7,7 @@ import org.springboot.entity.dto.RefreshDTO;
 import org.springboot.entity.dto.UserLoginDTO;
 import org.springboot.entity.request.UserRequest;
 import org.springboot.service.UserFavoriteBookService;
+import org.springboot.service.UserAvatarService;
 import org.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,6 +33,9 @@ public class UserController {
 
     @Autowired
     UserFavoriteBookService userFavoriteBookService;
+
+    @Autowired
+    UserAvatarService userAvatarService;
 
     @GetMapping("/")
     public Result allUsers() {
@@ -60,7 +66,13 @@ public class UserController {
     @GetMapping("/info")
     public Result getUserInfo() {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return Result.success(jwtUser);
+        return Result.success(userService.getUserInfo(jwtUser.getId()));
+    }
+
+    @PostMapping("/avatar")
+    public Result uploadAvatar(@RequestParam("file") MultipartFile file) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Result.success(userAvatarService.uploadAvatar(jwtUser.getId(), file));
     }
 
     @GetMapping("/favorites")

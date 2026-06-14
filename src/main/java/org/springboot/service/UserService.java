@@ -2,6 +2,7 @@ package org.springboot.service;
 
 import org.springboot.common.Result;
 import org.springboot.entity.User;
+import org.springboot.entity.dto.JwtUser;
 import org.springboot.entity.dto.UserLoginDTO;
 import org.springboot.entity.request.UserRequest;
 
@@ -13,6 +14,8 @@ public interface UserService {
     List<User> allUsers();
 
     Object getUsers(UserRequest userRequest);
+
+    JwtUser getUserInfo(Integer userId);
 
     int addUser(User user);
 
