@@ -1,39 +1,12 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sylibrary?serverTimezone=GMT%2b8
-    username: root
-    password: 78373361
+  application:
+    name: sylibrary
+  profiles:
+    default: dev
 
-  data:
-    redis:
-      host: 127.0.0.1
-      port: 6379
-      password: roger0217
-      database: 0
-      lettuce:
-        pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 0
-          max-wait: 2000
-
-logging:
-  level:
-    root: INFO
-    org.springboot: DEBUG
-    org.springframework.jdbc.core: DEBUG
-    org.hibernate.SQL: DEBUG
+server:
+  port: 8080
 
 book-import:
-  open-library:
-    proxy:
-      enabled: true
-      host: 127.0.0.1
-      port: 7897
   google-books:
     api-key: ${GOOGLE_BOOK_API_KEY:}
-    proxy:
-      enabled: true
-      host: 127.0.0.1
-      port: 7897
