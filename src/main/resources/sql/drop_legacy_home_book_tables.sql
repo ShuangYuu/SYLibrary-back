@@ -1,2 +1,0 @@
-DROP TABLE IF EXISTS `newbook`;
-DROP TABLE IF EXISTS `bannerbook`;
